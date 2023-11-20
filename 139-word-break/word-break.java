@@ -1,22 +1,24 @@
 class Solution {
-    	Boolean[] mem;
-    public boolean wordBreak(String s, List<String> wordDict) {
-        mem=new Boolean[s.length()];
-        return wordBreak(0,s,new HashSet<String>(wordDict));   
+   public static boolean wordBreak(String s, List<String> wordDict) {
+        int[] mem = new int[s.length()+1];
+        Arrays.fill(mem,-1);
+        return wordBreakHelper(s,new HashSet<>(wordDict),0, mem);
     }
-    private boolean wordBreak(int p, String s, Set<String> dict){
-        int n=s.length();
-        if(p==n) {
-            return true;
-        }
-        if(mem[p]!=null) {
-            return mem[p];
-        }
-        for(int i=p+1;i<=n;i++) {
-            if(dict.contains(s.substring(p,i))&&wordBreak(i,s,dict)) { 
-                return mem[p]=true;
+
+    public static boolean wordBreakHelper(String s, Set<String> wordDict, int p, int[] mem){
+        String tmp="";
+        if(p >= s.length()) return true;
+        if(mem[p] != -1) return mem[p] == 1;
+        for(int i = p;i<s.length();i++){
+            tmp += s.charAt(i);
+            if(wordDict.contains(tmp)){
+                if(wordBreakHelper(s, wordDict, i + 1, mem)){
+                    mem[i] = 1;
+                    return true;
+                }
             }
         }
-        return mem[p]=false;
+        mem[p] =0;
+        return false;
     }
 }
