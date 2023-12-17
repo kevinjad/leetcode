@@ -14,7 +14,8 @@ class Solution {
         }
         if(i>=word1.length) {
             if(j<word2.length) {
-                return minDistanceHelper(word1,word2,i,j+1, mem)+1;
+                return word2.length-j;
+                //return minDistanceHelper(word1,word2,i,j+1, mem)+1;
             }
         }
         if(mem[i][j] != -1) return mem[i][j];
