@@ -22,7 +22,7 @@ class Solution {
                 }
                 if(!map.containsKey(e[0])) continue;
                 for(int[] c : map.get(e[0])){
-                    if(vis[c[0]] > e[1]+c[1]){
+                    if(vis[c[0]] > e[1]+c[1] && min > e[1]+c[1]){
                         q.offer(new int[]{c[0],c[1]+e[1]});
                         vis[c[0]] = e[1]+c[1];
                     }
