@@ -15,7 +15,9 @@ class Solution {
     }
 
     public int burst(int[] arr, int left, int right, int[][] mem){
-        // one case
+        // one case explicit
+        if (left + 1 == right) return 0;
+        
         int ans = 0;
         if(mem[left][right] != 0) return mem[left][right];
         for(int i = left+1;i<right;i++){
