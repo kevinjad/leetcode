@@ -14,7 +14,8 @@ class Solution {
             int query = queriesWithIndex[i][0];
             int queryIndex = queriesWithIndex[i][1];
 
-            while(j< intervals.length && intervals[j][0] <= query ){
+            while(j< intervals.length && intervals[j][0] <= query){
+                if (query <= intervals[j][1])
                 pq.add(intervals[j]);
                 j++;
             }
