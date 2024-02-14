@@ -19,18 +19,6 @@ class Solution {
         return compare(root,subRoot) || isSubtree(root.left,subRoot) || isSubtree(root.right,subRoot);
     }
 
-    public TreeNode search(TreeNode root, TreeNode subRoot){
-        if(root == null) return null;
-        if(root.val == subRoot.val){
-            return root;
-        }
-        if(subRoot.val < root.val){
-            return search(root.left, subRoot);
-        } else{
-            return search(root.left, subRoot);
-        }
-    }
-
     public boolean compare(TreeNode root, TreeNode subRoot){
         if(root == null || subRoot == null){
             return root == subRoot;
