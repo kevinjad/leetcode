@@ -1,35 +1,36 @@
 class Solution {
-   public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
-        Map<Integer, List<int[]>> map = new HashMap<>();
-        int[] vis = new int[n];
-        Arrays.fill(vis, Integer.MAX_VALUE);
-        for(int[] f : flights) {
-            map.putIfAbsent(f[0], new ArrayList<>());
-            map.get(f[0]).add(new int[]{f[1],f[2]});
-        }
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[]{src, 0});
-        int min = Integer.MAX_VALUE;
+    // public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+    //     int[] main = new int[n];
+    //     Arrays.fill(main, Integer.MAX_VALUE);
+    //     main[src] = 0;
+    //     for(int i = 0;i<=k;i++){
+    //         int[] temp = Arrays.copyOf(main,n);
+    //         for(int[] f : flights){
+    //             if(main[f[0]] == Integer.MAX_VALUE) continue;
+    //             if(main[f[0]]+f[2] < main[f[1]]) temp[f[1]] = main[f[0]]+f[2];
+    //         }
+    //         main = temp;
+    //     }
+    //     return main[dst] == Integer.MAX_VALUE ? -1 : main[dst];
+    // }
 
-        int step = 0;
-
-        while(!q.isEmpty()){
-            int size = q.size();
-            for (int i = 0;i<size;i++){
-                int[] e = q.poll();
-                if(e[0] == dst) {
-                    min = Math.min(e[1],min);
-                }
-                if(!map.containsKey(e[0])) continue;
-                for(int[] c : map.get(e[0])){
-                    if(vis[c[0]] > e[1]+c[1] && min > e[1]+c[1]){
-                        q.offer(new int[]{c[0],c[1]+e[1]});
-                        vis[c[0]] = e[1]+c[1];
-                    }
-                }
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K)
+    {
+        int[] cost=new int[n];
+        Arrays.fill(cost,Integer.MAX_VALUE);
+        cost[src]=0;
+        for(int i=0;i<=K;i++)
+        {
+            int[] temp= Arrays.copyOf(cost,n);
+            for(int[] f: flights)
+            {
+                int curr=f[0],next=f[1],price=f[2];
+                if(cost[curr]==Integer.MAX_VALUE)
+                    continue;
+                temp[next]=Math.min(temp[next],cost[curr]+price);
             }
-            if(step++ > k) break;
+            cost=temp;
         }
-        return min == Integer.MAX_VALUE ? -1 : min;
+        return cost[dst]==Integer.MAX_VALUE?-1:cost[dst];
     }
 }
