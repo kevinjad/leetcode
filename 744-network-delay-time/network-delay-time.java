@@ -1,20 +1,21 @@
 class Solution {
-    public int networkDelayTime(int[][] times, int n, int k) {
-       int[] cost = new int[n+1];
-       Arrays.fill(cost,Integer.MAX_VALUE);
-       cost[k] = 0;
-       cost[0] = 0;
-        for(int i = 1; i<n;i++){
-            for(int[] t : times){
-                int src = t[0]; int dst = t[1]; int signal = t[2];
-                if(cost[src] == Integer.MAX_VALUE) continue;
-                cost[dst] = Math.min(cost[dst], cost[src]+signal);
+    public int networkDelayTime(int[][] times, int N, int k) {
+        int[] dist = new int[N+1];
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        dist[k] = 0;
+        dist[0] = 0;
+        //non intuitive
+        for(int i = 0; i<N;i++){
+            for(int[] e : times){
+                int m = e[0]; int n = e[1]; int signal = e[2];
+                if(dist[m] == Integer.MAX_VALUE) continue;
+                dist[n] = Math.min(dist[n],dist[m]+signal);
             }
         }
-        int answer = Integer.MIN_VALUE;
-        for(int c : cost){
-            answer = Math.max(answer, c);
+        int minVal = Integer.MIN_VALUE;
+        for(int p : dist){
+            minVal = Math.max(minVal, p);
         }
-        return answer == Integer.MAX_VALUE? -1 : answer;
+        return minVal == Integer.MAX_VALUE ? -1 : minVal;
     }
 }
