@@ -12,14 +12,13 @@ class Solution {
         boolean[] visited = new boolean[n];
         Queue<Integer> q = new LinkedList<>();
         q.add(source);
-        visited[source] = true;
         while(!q.isEmpty()){
             int p = q.poll();
+            if(visited[p]) continue;
+            visited[p] = true;
             if(p == destination) return true;
             for(int c : graph[p]){
-                if(c == destination) return true;
                 if(!visited[c]){
-                    visited[c] = true;
                     q.add(c);
                 }
             }
