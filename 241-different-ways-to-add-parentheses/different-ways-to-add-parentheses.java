@@ -1,5 +1,8 @@
 class Solution {
+
+    Map<String, List<Integer>> mem = new HashMap<>();
     public List<Integer> diffWaysToCompute(String expression) {
+        if(mem.get(expression) != null) return mem.get(expression);
         List<Integer> res = new ArrayList<>();
         for(int i = 0;i<expression.length();i++){
             char c = expression.charAt(i);
@@ -24,6 +27,7 @@ class Solution {
         if(res.size() == 0) {
             res.add(Integer.valueOf(expression));
         }
+        mem.put(expression, res);
         return res;
     }
 }
