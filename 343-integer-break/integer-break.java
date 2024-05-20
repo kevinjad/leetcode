@@ -1,16 +1,5 @@
 class Solution {
     public int integerBreak(int n) {
-        /*
-        1 5
-        2 4
-        3 3
-        4 2
-
-
-        1 3
-        2 2
-         */
-
         if(n == 2) return 1;
         if(n == 3) return 2;
         int[] dp = new int[n+1];
