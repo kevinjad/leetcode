@@ -10,6 +10,7 @@ class Solution {
                 if(i%j == 0){
                     if(!dp[i-j]){
                         dp[i] = true;
+                        break;
                     }
                 }
             }
