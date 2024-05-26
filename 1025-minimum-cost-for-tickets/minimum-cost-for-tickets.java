@@ -1,27 +1,17 @@
 class Solution {
-    public int mincostTickets(int[] days, int[] costs) {
-        int[] mem = new int[days.length];
-        Arrays.fill(mem, -1);
-        return helper(days, costs, 0, 0, mem);
-    }
-
-    public int helper(int[] days, int[] cost, int i, int passdays, int[] mem) {
-        if(i == days.length) return 0;
-        if(mem[i] != -1) return mem[i];
-        int ans = 0;
-        ans = Math.min(Math.min(cost[0]+helper(days, cost, getNextDayToBuy(i, days, 1), days[i]+0, mem), cost[1]+helper(days, cost, getNextDayToBuy(i, days, 7), days[i]+6, mem)), cost[2]+helper(days, cost, getNextDayToBuy(i, days, 30), days[i]+29, mem));
-        mem[i] = ans;
-        return ans;
-    }
-
-    private int getNextDayToBuy(int dayIndex, int[] days, int duration) {
-        int endDay = days[dayIndex] + duration - 1;
-        int newDayIndex = dayIndex;
-		
-        while (newDayIndex < days.length && days[newDayIndex] <= endDay) {
-            newDayIndex++;
+    public int mincostTickets(int[] days, int[] cost) {
+        Set<Integer> dayset = new HashSet<Integer>();
+        for(int d : days) dayset.add(d);
+        int[] dp = new int[366];
+        for(int i = 1; i<366;i++){
+            if(!dayset.contains(i)) {
+                dp[i] = dp[i-1];
+                continue;
+            }
+            int before7 = i-7 < 0 ? 0 : i-7;
+            int before30 = i-30 < 0 ? 0 : i-30;
+            dp[i] = Math.min(Math.min(dp[i-1]+cost[0], dp[before7]+cost[1]),dp[before30]+cost[2]);
         }
-        
-        return newDayIndex;
+        return dp[365];
     }
 }
