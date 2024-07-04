@@ -33,6 +33,41 @@ class Solution {
     // }
 
     public int networkDelayTime(int[][] times, int N, int k) {
+        int[][] signal = new int[N+1][N+1];
+        List<Integer>[] graph = new List[N+1];
+        for(int i = 0;i<=N;i++){
+            graph[i] = new ArrayList<Integer>();
+        }
+        for(int[] t : times){
+            graph[t[0]].add(t[1]);
+            signal[t[0]][t[1]] = t[2];
+        }
+        int[] dist = new int[N+1];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[k] = 0;
+        dist[0] = 0;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<int[]>((a,b) -> (a[1]-b[1]));
+        pq.add(new int[]{k,0});
+        while(!pq.isEmpty()){
+            int[] e = pq.poll();
+            int s = e[0]; int w = e[1];
+            for(int c : graph[s]){
+                if(dist[c] >  w+signal[s][c]){
+                    dist[c] = w+signal[s][c];
+                    pq.add(new int[]{c, dist[c]});
+                }
+            }
+        }
+
+        int max = Integer.MIN_VALUE;
+        for(int p : dist){
+            max = Math.max(max, p);
+        }
+        return max == Integer.MAX_VALUE ? -1 : max;
+
+    }
+    public int networkDelayTime1(int[][] times, int N, int k) {
         int[] dist = new int[N+1]; // min dist from k to 1 to n
         Arrays.fill(dist, Integer.MAX_VALUE);
         dist[0] = 0;
