@@ -32,26 +32,45 @@ class Solution {
     //     return minVal == Integer.MAX_VALUE ? -1 : minVal;
     // }
 
-
     public int networkDelayTime(int[][] times, int N, int k) {
-        int[] dist = new int[N+1];
-        Arrays.fill(dist,Integer.MAX_VALUE);
-        dist[k] = 0;
+        int[] dist = new int[N+1]; // min dist from k to 1 to n
+        Arrays.fill(dist, Integer.MAX_VALUE);
         dist[0] = 0;
-        //non intuitive
-        for(int i = 0; i<N;i++){
-            for(int[] e : times){
-                int m = e[0]; int n = e[1]; int signal = e[2];
-                if(dist[m] == Integer.MAX_VALUE) continue;
-                dist[n] = Math.min(dist[n],dist[m]+signal);
+        dist[k] = 0;
+        for(int i = 0;i<N;i++){
+            for(int[] t : times){
+                int s = t[0]; int d = t[1]; int w = t[2];
+                if(dist[s] == Integer.MAX_VALUE) continue;
+                dist[d] = Math.min(dist[d], dist[s]+w);
             }
         }
-        int minVal = Integer.MIN_VALUE;
+        int max = Integer.MIN_VALUE;
         for(int p : dist){
-            minVal = Math.max(minVal, p);
+            max = Math.max(max, p);
         }
-        return minVal == Integer.MAX_VALUE ? -1 : minVal;
+        return max == Integer.MAX_VALUE ? -1 : max;
+        
     }
+
+    // public int networkDelayTime(int[][] times, int N, int k) {
+    //     int[] dist = new int[N+1];
+    //     Arrays.fill(dist,Integer.MAX_VALUE);
+    //     dist[k] = 0;
+    //     dist[0] = 0;
+    //     //non intuitive
+    //     for(int i = 0; i<N;i++){
+    //         for(int[] e : times){
+    //             int m = e[0]; int n = e[1]; int signal = e[2];
+    //             if(dist[m] == Integer.MAX_VALUE) continue;
+    //             dist[n] = Math.min(dist[n],dist[m]+signal);
+    //         }
+    //     }
+    //     int minVal = Integer.MIN_VALUE;
+    //     for(int p : dist){
+    //         minVal = Math.max(minVal, p);
+    //     }
+    //     return minVal == Integer.MAX_VALUE ? -1 : minVal;
+    // }
 
 //     public int networkDelayTime(int[][] times, int N, int K) {
 //     Map<Integer, List<int[]>> graph = new HashMap<>();
