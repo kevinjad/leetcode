@@ -1,35 +1,39 @@
 class Solution {
     public int minCostConnectPoints(int[][] points) {
-        Set<Integer> visited = new HashSet<>();
-        PriorityQueue<PointDistance> minHeap = new PriorityQueue<PointDistance>(Comparator.comparingInt(o -> o.distance));
-        minHeap.add(new PointDistance(0,0));
-        int count = 0;
-        while(!minHeap.isEmpty()){
-            PointDistance p = minHeap.remove();
-            if(visited.contains(p.node)) continue;
-            count += p.distance;
-            visited.add(p.node);
-            if(visited.size() == points.length) return count;
-            //add all connected nodes to minHeap
-            for(int i = 0;i<points.length;i++) {
-                if(i == p.node || visited.contains(i)) continue;
-                minHeap.add(new PointDistance(findDist(points, p.node, i), i));
+        int n = points.length;
+        List<int[]> edges = new ArrayList<>();
+        for(int i = 0;i<n;i++){
+            for(int j = i+1;j<n;j++){
+                edges.add(new int[]{i,j,getDistance(points[i],points[j])});
             }
+        }
+        Collections.sort(edges, (a,b) -> a[2]-b[2]);
+        UnionFind uf = new UnionFind(n);
+        int count = 0;
+        for(int[] e : edges){
+            if(uf.find(e[0]) == uf.find(e[1])) continue;
+            uf.union(e[0],e[1]);
+            count+= e[2];
         }
         return count;
     }
 
-    private int findDist(int[][] points, int a, int b) {
-        return Math.abs(points[a][0] - points[b][0]) + Math.abs(points[a][1] - points[b][1]);
+    public int getDistance(int[] a, int[] b)  {
+        return Math.abs(a[0]-b[0]) + Math.abs(a[1]-b[1]);
     }
 
-    private class PointDistance {
-        int distance;
-        int node;
-
-        PointDistance(int distance, int node){
-            this.distance = distance;
-            this.node = node;
+    class UnionFind {   
+        int[] parent;
+        UnionFind(int n) {
+            this.parent = new int[n];
+            for(int i = 0; i < n; i++) parent[i] = i;
+        }		
+        public void union(int a, int b) {
+            parent[find(a)] = parent[find(b)];
+        }
+        public int find(int x) {
+            if(parent[x] != x) parent[x] = find(parent[x]);
+            return parent[x];
         }
     }
 }
