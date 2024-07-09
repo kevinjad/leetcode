@@ -7,6 +7,7 @@ class Solution {
         for(int i = 1;i<intervals.length;i++){
             if(intervals[i][0] < e){
                 count++;
+                e = Math.min(e, intervals[i][1]);
             } else{
                 e = intervals[i][1];
             }
@@ -18,8 +19,8 @@ class Solution {
 class IntervalComparator implements Comparator<int[]> {
         public int compare(int[] a, int[] b) {
             // if(a[0] == b[0]){
-                return a[1]-b[1];
+            //     return a[1]-b[1];
             // }
-            // return a[0] - b[0];
+            return a[0] - b[0];
         }
     }
