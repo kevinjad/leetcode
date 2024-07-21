@@ -1,39 +1,30 @@
 class Solution {
     public int minCostConnectPoints(int[][] points) {
         int n = points.length;
-        List<int[]> edges = new ArrayList<>();
-        for(int i = 0;i<n;i++){
-            for(int j = i+1;j<n;j++){
-                edges.add(new int[]{i,j,getDistance(points[i],points[j])});
+        int ans = 0;
+        boolean[] visited = new boolean[n];
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1]-b[1]);
+
+        // add first point
+        pq.add(new int[]{0, 0});
+        while(!pq.isEmpty()){
+            int[] e = pq.poll();
+            if(visited[e[0]]) continue;
+            visited[e[0]] = true;
+            ans += e[1];
+            // add all edges to the pq
+            for(int i = 0;i<n;i++){
+                if(visited[i]) continue;
+                int[] p = points[i];
+                int[] q = points[e[0]];
+                int dist = getDistance(p, q);
+                pq.add(new int[]{i, dist});
             }
         }
-        Collections.sort(edges, (a,b) -> a[2]-b[2]);
-        UnionFind uf = new UnionFind(n);
-        int count = 0;
-        for(int[] e : edges){
-            if(uf.find(e[0]) == uf.find(e[1])) continue;
-            uf.union(e[0],e[1]);
-            count+= e[2];
-        }
-        return count;
+        return ans;
     }
 
     public int getDistance(int[] a, int[] b)  {
         return Math.abs(a[0]-b[0]) + Math.abs(a[1]-b[1]);
-    }
-
-    class UnionFind {   
-        int[] parent;
-        UnionFind(int n) {
-            this.parent = new int[n];
-            for(int i = 0; i < n; i++) parent[i] = i;
-        }		
-        public void union(int a, int b) {
-            parent[find(a)] = parent[find(b)];
-        }
-        public int find(int x) {
-            if(parent[x] != x) parent[x] = find(parent[x]);
-            return parent[x];
-        }
     }
 }
