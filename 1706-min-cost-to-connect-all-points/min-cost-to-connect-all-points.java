@@ -5,14 +5,12 @@ class Solution {
         boolean[] visited = new boolean[n];
         PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1]-b[1]);
 
-        // add first point
         pq.add(new int[]{0, 0});
         while(!pq.isEmpty()){
             int[] e = pq.poll();
             if(visited[e[0]]) continue;
             visited[e[0]] = true;
             ans += e[1];
-            // add all edges to the pq
             for(int i = 0;i<n;i++){
                 if(visited[i]) continue;
                 int[] p = points[i];
