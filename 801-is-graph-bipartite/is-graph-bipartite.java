@@ -7,6 +7,7 @@ class Solution {
             Queue<Integer> q = new LinkedList<>();
             q.add(i);
             odd[i] = -1;
+            //unique way of preventing cycles (check in foring the children before adding to the visit tracker)
             while(!q.isEmpty()){
                 int e = q.poll();
                 for(int c : graph[e]){
