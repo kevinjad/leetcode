@@ -1,32 +1,24 @@
 class Solution {
     public int largestRectangleArea(int[] heights) {
-        int maxArea = 0;
-        Stack<Pair> stack = new Stack<>();
-        for(int i = 0;i< heights.length;i++){
-            int indexToPutInStack = i;
-            while(!stack.isEmpty() && stack.peek().value > heights[i]){
-                Pair p = stack.pop();
-                maxArea = Math.max(maxArea, p.value*(i-p.index));
-                indexToPutInStack = p.index;
+        Stack<Integer> st = new Stack<>();
+        int maxarea = 0;
+        for(int i = 0; i<heights.length;i++){
+            int ips = i;
+            if(st.isEmpty()) st.push(ips);
+            else {
+                while(!st.isEmpty() && heights[st.peek()] > heights[i]){
+                    int ind = st.pop();
+                    maxarea = Math.max(maxarea, (i-ind)*heights[ind]);
+                    ips = ind;
+                }
+                st.push(ips);
+                heights[ips] = heights[i];
             }
-            stack.push(new Pair(indexToPutInStack,heights[i]));
         }
-        while(!stack.isEmpty()){
-            Pair p = stack.pop();
-            maxArea = Math.max(maxArea, p.value*(heights.length-p.index));
+        while(!st.isEmpty()){
+            int ind = st.pop();
+            maxarea = Math.max(maxarea, (heights.length-ind)*heights[ind]);
         }
-        return maxArea;
+        return maxarea;
     }
-}
-
-class Pair{
-    int index;
-    int value;
-
-    public Pair(int i, int v){
-        index = i;
-        value = v;
-    }
-
-    public Pair (){}
 }
